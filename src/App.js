@@ -1,14 +1,22 @@
 import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 import randomColor from 'randomcolor';
 /** @jsxImportSource @emotion/react */
 import React, { useState } from 'react';
 
-// css divs
-const divStyle = css`
+const Fragment = styled.body`
+  max-width: 1400px;
+  height: auto;
   box-sizing: border-box;
+  margin: 0;
+`;
+
+// css divs
+const Section = styled.section`
+  /* box-sizing: border-box; */
   margin: 0 auto;
   width: 600px;
-  height: 350px;
+  height: 360px;
   margin-bottom: 10px;
   display: flex;
   justify-content: center;
@@ -16,8 +24,8 @@ const divStyle = css`
   border: 4px solid #001e3c;
 `;
 
-// css generated div
-const divOuput = css`
+// css div box color
+const Div = styled.div`
   color: 'black';
   text-align: 'center';
   font-weight: '600';
@@ -25,7 +33,7 @@ const divOuput = css`
 `;
 
 // css heading
-const headerOneStyle = css`
+const Heading = styled.h1`
   width: 400px;
   height: 30px;
   margin: 10px auto;
@@ -41,13 +49,11 @@ const headerOneStyle = css`
 
 // css form
 const formStyle = css`
-  width: inherit;
   margin: 10px 8px;
 `;
 
 // css for ul
-const ulStyle = css`
-  width: inherit;
+const Ul = styled.ul`
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -56,8 +62,8 @@ const ulStyle = css`
   align-items: flex-end;
 `;
 
-// css for li
-const liStyle = css`
+// css li
+const Li = styled.li`
   text-align: right;
 `;
 
@@ -96,133 +102,103 @@ const buttonStyle = css`
   }
 `;
 
-// Show color in a box based on hue,lume, width, height or none if not selected
-export function ChangeBackground(props) {
-  return (
-    props.generateColor && (
-      <div
-        css={{ divOuput }}
-        style={{
-          backgroundColor: props.generateColor,
-          width: props.height,
-          height: props.width,
-          position: 'relative',
-          top: '50px',
-          left: '0px',
-        }}
-      >
-        Generated Color: {props.generateColor}
-      </div>
-    )
-  );
-}
-
-// eventhandler on button
-export function RandomColors(props) {
-  const [changeColor, setCount] = useState('');
-  return (
-    <>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <button
-          css={buttonStyle}
-          onClick={() => setCount(randomColor(props.setHue, props.setLum))}
-        >
-          Generate
-        </button>
-      </div>
-      <ChangeBackground
-        generateColor={changeColor}
-        width={props.width + 'px'}
-        height={props.height + 'px'}
-      />
-    </>
-  );
-}
-
-// save and track input (hue, lumi, width, height)
-export function ChangeHueAndLum() {
-  const [valueHue, setValueHue] = useState('');
-  const [valueLumi, setValueLumi] = useState('');
+function App() {
+  const [valueHue, setValueHue] = useState('undefined');
+  const [valueLumi, setValueLumi] = useState('undefined');
   const [valueWidth, setValueWidth] = useState('');
   const [valueHeight, setValueHeight] = useState('');
+  const [changeColor, setCount] = useState('');
 
   return (
-    <div style={{ margin: '2px' }}>
-      <form css={formStyle}>
-        <ul css={ulStyle}>
-          <li css={liStyle}>
-            <label htmlFor="hui-select"> Select Hue: </label>
-            <select
-              css={optionStyle}
-              name="hui"
-              id="hui-select"
-              value={valueHue}
-              onChange={(event) => setValueHue(event.target.value)}
+    <Fragment>
+      <Heading>random color generator</Heading>
+      <Section>
+        <div style={{ margin: '2px' }}>
+          <form css={formStyle} onSubmit={(event) => event.preventDefault()}>
+            <Ul>
+              <Li>
+                <label htmlFor="hui-select"> Select Hue: </label>
+                <select
+                  css={optionStyle}
+                  name="hui"
+                  id="hui-select"
+                  value={valueHue}
+                  onChange={(event) => setValueHue(event.target.value)}
+                >
+                  <option value="undefined">-- select --</option>
+                  <option value="red">red</option>
+                  <option value="green">green</option>
+                  <option value="blue">blue</option>
+                </select>
+              </Li>
+
+              <Li>
+                <label htmlFor="lumi-select">Select Luminosity:</label>
+                <select
+                  css={optionStyle}
+                  name="lumi"
+                  id="lumi-select"
+                  value={valueLumi}
+                  onChange={(event) => setValueLumi(event.target.value)}
+                >
+                  <option value="undefined">-- select --</option>
+                  <option value="dark">dark</option>
+                  <option value="light">light</option>
+                </select>
+              </Li>
+
+              <Li>
+                <label htmlFor="width-select">Set Width:</label>
+                <input
+                  css={optionStyle}
+                  value={valueWidth}
+                  type="number"
+                  min="0"
+                  onChange={(event) => setValueWidth(event.target.value)}
+                />
+              </Li>
+              <Li>
+                <label htmlFor="height">Set Height: </label>
+                <input
+                  id="height"
+                  css={optionStyle}
+                  value={valueHeight}
+                  type="number"
+                  min="0"
+                  onChange={(event) => setValueHeight(event.target.value)}
+                />
+              </Li>
+              <Li>
+                <button
+                  css={buttonStyle}
+                  onClick={() =>
+                    setCount(
+                      randomColor({ hue: valueHue, luminosity: valueLumi }),
+                    )
+                  }
+                >
+                  Generate
+                </button>
+              </Li>
+            </Ul>
+          </form>
+          {changeColor && (
+            <Div
+              style={{
+                backgroundColor: changeColor,
+                width: valueWidth + 'px',
+                height: valueHeight + 'px',
+                position: 'relative',
+                top: '50px',
+                left: '0px',
+              }}
             >
-              <option value="undefined">-- select --</option>
-              <option value="red">red</option>
-              <option value="green">green</option>
-              <option value="blue">blue</option>
-            </select>
-          </li>
-
-          <li css={liStyle}>
-            <label htmlFor="lumi-select">Select Luminosity:</label>
-            <select
-              css={optionStyle}
-              name="lumi"
-              id="lumi-select"
-              value={valueLumi}
-              onChange={(event) => setValueLumi(event.target.value)}
-            >
-              <option value="undefined">-- select --</option>
-              <option value="dark">dark</option>
-              <option value="light">light</option>
-            </select>
-          </li>
-
-          <li css={liStyle}>
-            <label htmlFor="width-select">Set Width:</label>
-            <input
-              css={optionStyle}
-              value={valueWidth}
-              type="number"
-              min="0"
-              onChange={(event) => setValueWidth(event.target.value)}
-            />
-          </li>
-          <li css={liStyle}>
-            <label htmlFor="height">Set Height: </label>
-            <input
-              id="height"
-              css={optionStyle}
-              value={valueHeight}
-              type="number"
-              min="0"
-              onChange={(event) => setValueHeight(event.target.value)}
-            />
-          </li>
-        </ul>
-      </form>
-
-      <RandomColors
-        setLum={valueLumi}
-        setHue={valueHue}
-        height={valueHeight}
-        width={valueWidth}
-      />
-    </div>
-  );
-}
-
-function App() {
-  return (
-    <>
-      <h1 css={headerOneStyle}>random color generator</h1>
-      <div css={divStyle}>
-        <ChangeHueAndLum />
-      </div>
-    </>
+              Generated Color: {changeColor}
+            </Div>
+          )}
+        </div>
+      </Section>
+    </Fragment>
   );
 }
 
