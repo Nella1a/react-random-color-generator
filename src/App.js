@@ -128,7 +128,7 @@ export function RandomColors(props) {
           css={buttonStyle}
           onClick={() => setCount(randomColor(props.setHue, props.setLum))}
         >
-          generate
+          Generate
         </button>
       </div>
       <ChangeBackground
