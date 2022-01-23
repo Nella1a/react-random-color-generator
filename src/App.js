@@ -1,84 +1,80 @@
-/** @jsxImportSource @emotion/react */
-
 import { css } from '@emotion/react';
 import randomColor from 'randomcolor';
-import { useState } from 'react';
+/** @jsxImportSource @emotion/react */
+import React, { useState } from 'react';
 
-// import reactDom from 'react-dom';
-
-//function return random colors
-function randomColorOutput(hueI = 'undefined', lum = 'undefined') {
-  return randomColor({
-    hue: hueI,
-    luminosity: lum,
-  });
-}
-
-//css divs
+// css divs
 const divStyle = css`
   box-sizing: border-box;
   margin: 0 auto;
-  width: 300px;
-  height: 300px;
+  width: 600px;
+  height: 350px;
+  margin-bottom: 10px;
   display: flex;
   justify-content: center;
-  border-radius: 10%;
+  border-radius: 2%;
+  border: 4px solid #001e3c;
 `;
 
-//css for all divs
-const generalDivStyle = css`
-  width: 400px;
-  height: 80px;
-  text-align: center;
+// css generated div
+const divOuput = css`
+  color: 'black';
+  text-align: 'center';
+  font-weight: '600';
+  font-size: '14px';
 `;
 
-//css for ul & li
-const ulStyle = css`
-  list-style: none;
-`;
-
-//css for li
-const liStyle = css`
-  text-align: right;
-`;
-
-//css heading
+// css heading
 const headerOneStyle = css`
-  width: 300px;
+  width: 400px;
   height: 30px;
-  margin: 50px auto;
-  color: #1c449b;
+  margin: 10px auto;
+  color: #001e3c;
   font-weight: 900px;
   text-align: center;
   padding: 10px;
   text-transform: uppercase;
-  font-size: 20px;
-  background-color: #001e3c;
-  color: #fff;
+  font-size: 24px;
+  background-color: #fff;
   border-radius: 5px;
 `;
 
-//css form
+// css form
 const formStyle = css`
-  display: flex;
-  /* flex-direction: column; */
-  justify-content: space-between;
-  align-items: left;
+  width: inherit;
+  margin: 10px 8px;
 `;
 
-//css input-elements
+// css for ul
+const ulStyle = css`
+  width: inherit;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  justify-content: center;
+  align-items: flex-end;
+`;
+
+// css for li
+const liStyle = css`
+  text-align: right;
+`;
+
+// css input-elements
 const optionStyle = css`
   box-sizing: border-box;
-  width: 150px;
-  height: 50px;
+  width: 350px;
+  height: 40px;
   margin-bottom: 20px;
   margin-left: 40px;
-  border: 2px solid #1976d2;
+  border: 2px solid #001e3c;
+  border-radius: 5px;
   font-size: 1rem;
   text-align: center;
 `;
 
-//css button generate
+//  css button generate
 const buttonStyle = css`
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   width: 150px;
@@ -91,81 +87,80 @@ const buttonStyle = css`
   min-width: 64px;
   padding: 6px 16px;
   border-radius: 4px;
-  background-color: #001e3c;
+  background-color: #ff6100;
   color: #fff;
   border: 0px solid #000;
+  &:hover {
+    background-color: #ff6100;
+    color: #001e3c;
+    border: 2px solid #ff6100;
+  }
 `;
 
-//Show color in a box based on hui,lumi, width , height or none if not selected
+// Show color in a box based on hue,lume, width, height or none if not selected
 export function ChangeBackground(props) {
-  console.log(props.name);
-  console.log(props.height, props.width);
   return (
-    props.name && (
+    props.generateColor && (
       <div
+        css={{ divOuput }}
         style={{
-          backgroundColor: props.name,
+          backgroundColor: props.generateColor,
           width: props.height,
           height: props.width,
-          color: 'black',
-          // marginLeft: '100px',
-          textAlign: 'center',
-          paddingTop: '2rem',
-          fontWeight: '300',
-          fontSize: '14px',
+          position: 'relative',
+          top: '50px',
+          left: '0px',
         }}
       >
-        Generated color: {props.name}
+        Generated color: {props.generateColor}
       </div>
     )
   );
 }
 
-//eventhandler on button
+// eventhandler on button
 export function RandomColors(props) {
   const [changeColor, setCount] = useState('');
   return (
     <>
-      <div css={generalDivStyle}>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
         <button
           css={buttonStyle}
-          onClick={() =>
-            setCount(randomColorOutput(props.setHui, props.setLum))
-          }
+          onClick={() => setCount(randomColor(props.setHue, props.setLum))}
         >
           generate
         </button>
       </div>
       <ChangeBackground
-        name={changeColor}
-        width={props.height}
-        height={props.width}
+        generateColor={changeColor}
+        width={props.width + 'px'}
+        height={props.height + 'px'}
       />
     </>
   );
 }
 
-//save and track input (hui, lumi, width, height)
-export function ChangeHuiAndLum() {
-  const [valueHui, setValueHui] = useState('');
+// save and track input (hue, lumi, width, height)
+export function ChangeHueAndLum() {
+  const [valueHue, setValueHue] = useState('');
   const [valueLumi, setValueLumi] = useState('');
   const [valueWidth, setValueWidth] = useState('');
   const [valueHeight, setValueHeight] = useState('');
 
   return (
-    <div>
+    <div style={{ margin: '2px' }}>
       <form css={formStyle}>
         <ul css={ulStyle}>
           <li css={liStyle}>
-            <label> Set Hui: </label>
+            <label htmlFor="hui-select"> Select Hue: </label>
             <select
               css={optionStyle}
               name="hui"
               id="hui-select"
-              value={valueHui}
-              onChange={(event) => setValueHui(event.target.value)}
+              value={valueHue}
+              onChange={(event) => setValueHue(event.target.value)}
             >
-              <option value="undefined">select hui</option>
+              <option value="undefined">-- select --</option>
               <option value="red">red</option>
               <option value="green">green</option>
               <option value="blue">blue</option>
@@ -173,7 +168,7 @@ export function ChangeHuiAndLum() {
           </li>
 
           <li css={liStyle}>
-            <label>Set Lumi:</label>
+            <label htmlFor="lumi-select">Select Luminosity:</label>
             <select
               css={optionStyle}
               name="lumi"
@@ -181,25 +176,30 @@ export function ChangeHuiAndLum() {
               value={valueLumi}
               onChange={(event) => setValueLumi(event.target.value)}
             >
-              <option value="undefined">select lum</option>
+              <option value="undefined">-- select --</option>
               <option value="dark">dark</option>
               <option value="light">light</option>
             </select>
           </li>
 
           <li css={liStyle}>
-            <label id="width-select">Set Width:</label>
+            <label htmlFor="width-select">Set Width:</label>
             <input
               css={optionStyle}
               value={valueWidth}
+              type="number"
+              min="0"
               onChange={(event) => setValueWidth(event.target.value)}
             />
           </li>
           <li css={liStyle}>
-            <label>Set Height: </label>
+            <label htmlFor="height">Set Height: </label>
             <input
+              id="height"
               css={optionStyle}
               value={valueHeight}
+              type="number"
+              min="0"
               onChange={(event) => setValueHeight(event.target.value)}
             />
           </li>
@@ -208,22 +208,20 @@ export function ChangeHuiAndLum() {
 
       <RandomColors
         setLum={valueLumi}
-        setHui={valueHui}
+        setHue={valueHue}
         height={valueHeight}
         width={valueWidth}
       />
-      {/* <ChangeBackground height={valueHeight} width={valueWidth} /> */}
     </div>
   );
 }
 
-//parent component
 function App() {
   return (
     <>
-      <h1 css={headerOneStyle}>radom color generator</h1>
+      <h1 css={headerOneStyle}>random color generator</h1>
       <div css={divStyle}>
-        <ChangeHuiAndLum />
+        <ChangeHueAndLum />
       </div>
     </>
   );
