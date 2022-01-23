@@ -111,7 +111,7 @@ export function ChangeBackground(props) {
           left: '0px',
         }}
       >
-        Generated color: {props.generateColor}
+        Generated Color: {props.generateColor}
       </div>
     )
   );
