@@ -83,7 +83,6 @@ const buttonStyle = css`
   font-size: 0.875rem;
   line-height: 1.75;
   letter-spacing: 0.02857em;
-  text-transform: uppercase;
   min-width: 64px;
   padding: 6px 16px;
   border-radius: 4px;
