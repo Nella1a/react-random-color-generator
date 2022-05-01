@@ -8,6 +8,5 @@ This application will show a random color when a button is clicked:
 
 ## Screenshot
 
-<p>
-  <img src="./public/colorGenerator.png" width="700" alt="screenhot random color generator">
+<p><img src="./public/colorGenerator.png" width="700" alt="screenhot random color generator">
 </p>
